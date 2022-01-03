@@ -2,7 +2,7 @@ mod utils;
 mod errorcodes;
 mod instructions;
 mod constants;
-mod office_house_accounts;
+mod office_house_structs;
 
 use anchor_lang::prelude::*;
 

@@ -14,7 +14,7 @@ use anchor_lang::solana_program::{program::invoke_signed, program_option::COptio
 use crate::errorcodes::errors::Errors;
 use crate::constants::office_size::OFFICE_HOUSE_SIZE;
 use crate::constants::seeds::{FEE_PAYER, PREFIX, TREASURY};
-use crate::office_house_accounts::auction_house::AuctionHouse;
+use crate::office_house_structs::auction_house::AuctionHouse;
 use crate::utils::assert::{assert_is_ata, assert_keys_equal};
 use crate::utils::create_missing::create_program_token_account_if_not_present;
 use crate::utils::make_ata::make_ata;
