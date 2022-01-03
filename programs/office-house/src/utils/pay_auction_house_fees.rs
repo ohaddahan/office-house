@@ -11,6 +11,8 @@ use std::{convert::TryInto, slice::Iter};
 use arrayref::array_ref;
 use metaplex_token_metadata::state::Metadata;
 use anchor_lang::solana_program::{program::invoke_signed, program_option::COption, system_instruction};
+use crate::errorcodes::errors::Errors;
+use crate::office_house_structs::auction_house::AuctionHouse;
 
 
 #[allow(clippy::too_many_arguments)]
@@ -27,9 +29,9 @@ pub fn pay_auction_house_fees<'a>(
     let fees = auction_house.seller_fee_basis_points;
     let total_fee = (fees as u128)
         .checked_mul(size as u128)
-        .ok_or(ErrorCode::NumericalOverflow)?
+        .ok_or(Errors::NumericalOverflow)?
         .checked_div(10000)
-        .ok_or(ErrorCode::NumericalOverflow)? as u64;
+        .ok_or(Errors::NumericalOverflow)? as u64;
     if !is_native {
         invoke_signed(
             &spl_token::instruction::transfer(
