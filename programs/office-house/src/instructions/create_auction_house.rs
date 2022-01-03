@@ -10,37 +10,12 @@ use std::{convert::TryInto, slice::Iter};
 use arrayref::array_ref;
 use metaplex_token_metadata::state::Metadata;
 use anchor_lang::solana_program::{program::invoke_signed, program_option::COption, system_instruction};
-
+use crate::constants::seeds::{PREFIX, TREASURY};
 use crate::errorcodes::errors::Errors;
-use crate::constants::office_size::OFFICE_HOUSE_SIZE;
-use crate::constants::seeds::{FEE_PAYER, PREFIX, TREASURY};
-use crate::office_house_structs::auction_house::AuctionHouse;
+use crate::instructions::create_office_house::CreateAuctionHouse;
 use crate::utils::assert::{assert_is_ata, assert_keys_equal};
 use crate::utils::create_missing::create_program_token_account_if_not_present;
 use crate::utils::make_ata::make_ata;
-
-#[derive(Accounts)]
-#[instruction(bump: u8, fee_payer_bump: u8, treasury_bump: u8)]
-pub struct CreateAuctionHouse<'info> {
-    pub(crate) treasury_mint: Account<'info, Mint>,
-    pub(crate) payer: Signer<'info>,
-    pub(crate) authority: UncheckedAccount<'info>,
-    #[account(mut)]
-    pub(crate) fee_withdrawal_destination: UncheckedAccount<'info>,
-    #[account(mut)]
-    pub(crate) treasury_withdrawal_destination: UncheckedAccount<'info>,
-    pub(crate) treasury_withdrawal_destination_owner: UncheckedAccount<'info>,
-    #[account(init, seeds=[PREFIX.as_bytes(), authority.key().as_ref(), treasury_mint.key().as_ref()], bump=bump, space=OFFICE_HOUSE_SIZE, payer=payer)]
-    pub(crate) auction_house: Account<'info, AuctionHouse>,
-    #[account(mut, seeds=[PREFIX.as_bytes(), auction_house.key().as_ref(), FEE_PAYER.as_bytes()], bump=fee_payer_bump)]
-    pub(crate) auction_house_fee_account: UncheckedAccount<'info>,
-    #[account(mut, seeds=[PREFIX.as_bytes(), auction_house.key().as_ref(), TREASURY.as_bytes()], bump=treasury_bump)]
-    pub(crate) auction_house_treasury: UncheckedAccount<'info>,
-    pub(crate) token_program: Program<'info, Token>,
-    pub(crate) system_program: Program<'info, System>,
-    pub(crate) ata_program: Program<'info, AssociatedToken>,
-    pub(crate) rent: Sysvar<'info, Rent>,
-}
 
 pub fn create_auction_house<'info>(
     ctx: Context<'_, '_, '_, 'info, CreateAuctionHouse<'info>>,
