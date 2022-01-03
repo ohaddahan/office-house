@@ -1,9 +1,7 @@
 use anchor_lang::prelude::*;
-use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token::{Mint, Token, TokenAccount};
 use crate::office_house_structs::auction_house::AuctionHouse;
-use crate::constants::seeds::{FEE_PAYER, PREFIX, TREASURY};
-use crate::constants::office_size::OFFICE_HOUSE_SIZE;
+use crate::constants::seeds::{FEE_PAYER, PREFIX};
 
 #[derive(Accounts)]
 #[instruction(buyer_price: u64, token_size: u64)]

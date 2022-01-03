@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token::{Mint, Token};
 use crate::office_house_structs::auction_house::AuctionHouse;
-use crate::constants::seeds::{FEE_PAYER, PREFIX};
+use crate::constants::seeds::{PREFIX};
 
 #[derive(Accounts)]
 pub struct UpdateAuctionHouse<'info> {

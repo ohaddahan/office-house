@@ -9,6 +9,7 @@ use std::{convert::TryInto, slice::Iter};
 use arrayref::array_ref;
 use metaplex_token_metadata::state::Metadata;
 use anchor_lang::solana_program::{program::invoke_signed, program_option::COption, system_instruction};
+use metaplex_token_metadata::utils::assert_derivation;
 use crate::errorcodes::errors::Errors;
 
 pub fn assert_keys_equal(key1: Pubkey, key2: Pubkey) -> ProgramResult {
@@ -48,4 +49,24 @@ pub fn assert_is_ata(
     assert_keys_equal(ata_account.owner, *wallet)?;
     assert_keys_equal(get_associated_token_address(wallet, mint), *ata.key)?;
     Ok(ata_account)
+}
+
+pub fn assert_metadata_valid<'a>(
+    metadata: &UncheckedAccount,
+    token_account: &anchor_lang::Account<'a, TokenAccount>,
+) -> ProgramResult {
+    assert_derivation(
+        &metaplex_token_metadata::id(),
+        &metadata.to_account_info(),
+        &[
+            metaplex_token_metadata::state::PREFIX.as_bytes(),
+            metaplex_token_metadata::id().as_ref(),
+            token_account.mint.as_ref(),
+        ],
+    )?;
+
+    if metadata.data_is_empty() {
+        return Err(Errors::MetadataDoesntExist.into());
+    }
+    Ok(())
 }
