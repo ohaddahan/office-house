@@ -1,16 +1,6 @@
 use anchor_lang::prelude::*;
-use anchor_spl::associated_token::AssociatedToken;
-use anchor_lang::prelude::*;
-use anchor_spl::token::{Mint, Token, TokenAccount};
-use spl_token::instruction::initialize_account2;
-use spl_token::state::Account;
-use spl_associated_token_account::get_associated_token_address;
-use anchor_lang::solana_program::program_pack::IsInitialized;
-use anchor_lang::solana_program::program_pack::Pack;
-use std::{convert::TryInto, slice::Iter};
-use arrayref::array_ref;
-use metaplex_token_metadata::state::Metadata;
-use anchor_lang::solana_program::{program::invoke_signed, program_option::COption, system_instruction};
+use std::{convert::TryInto};
+use anchor_lang::solana_program::{program::invoke_signed, system_instruction};
 
 /// Create account almost from scratch, lifted from
 /// https://github.com/solana-labs/solana-program-library/blob/7d4873c61721aca25464d42cc5ef651a7923ca79/associated-token-account/program/src/processor.rs#L51-L98
