@@ -1,15 +1,20 @@
+use anchor_lang::prelude::*;
+use instructions::*;
+
 mod utils;
 mod errorcodes;
-mod instructions;
+pub mod instructions;
+pub mod office_house_structs;
 mod constants;
-mod office_house_structs;
 
-use anchor_lang::prelude::*;
+use office_house_structs::WithdrawFromFee;
+
 
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
 #[program]
 pub mod office_house {
+
     use super::*;
     pub fn initialize(_ctx: Context<Initialize>) -> ProgramResult {
         Ok(())
@@ -19,7 +24,7 @@ pub mod office_house {
     //     ctx: Context<'_, '_, '_, 'info, WithdrawFromFee<'info>>,
     //     amount: u64,
     // ) -> ProgramResult {
-    //     withdraw_from_fee(ctx, amount)
+    //     instructions::withdraw_from_fee::handler(ctx, amount)
     // }
 }
 

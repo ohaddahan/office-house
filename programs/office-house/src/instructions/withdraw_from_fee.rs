@@ -3,8 +3,7 @@ use anchor_lang::solana_program::{program::invoke_signed, system_instruction};
 use crate::constants::seeds::{FEE_PAYER, PREFIX};
 use crate::office_house_structs::withdraw_from_fee::WithdrawFromFee;
 
-
-pub fn withdraw_from_fee<'info>(
+pub fn handler<'info>(
     ctx: Context<'_, '_, '_, 'info, WithdrawFromFee<'info>>,
     amount: u64,
 ) -> ProgramResult {
