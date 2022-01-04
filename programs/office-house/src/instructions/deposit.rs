@@ -1,10 +1,32 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::{system_instruction, program::invoke};
+use anchor_lang::prelude::*;
+use anchor_spl::token::{Mint, Token};
 use crate::constants::seeds::{FEE_PAYER, PREFIX};
-use crate::office_house_structs::deposit::Deposit;
 use crate::utils::assert::{assert_is_ata, assert_keys_equal};
 use crate::utils::create_missing::create_program_token_account_if_not_present;
 use crate::utils::get_fee_payer::get_fee_payer;
+use crate::office_house_structs::auction_house::AuctionHouse;
+
+#[derive(Accounts)]
+#[instruction(escrow_payment_bump: u8)]
+pub struct Deposit<'info> {
+    pub(crate) wallet: Signer<'info>,
+    #[account(mut)]
+    pub(crate) payment_account: UncheckedAccount<'info>,
+    pub(crate) transfer_authority: UncheckedAccount<'info>,
+    #[account(mut, seeds=[PREFIX.as_bytes(), auction_house.key().as_ref(), wallet.key().as_ref()], bump=escrow_payment_bump)]
+    pub(crate) escrow_payment_account: UncheckedAccount<'info>,
+    pub(crate) treasury_mint: Account<'info, Mint>,
+    pub(crate) authority: UncheckedAccount<'info>,
+    #[account(seeds=[PREFIX.as_bytes(), auction_house.creator.as_ref(), auction_house.treasury_mint.as_ref()], bump=auction_house.bump, has_one=authority, has_one=treasury_mint, has_one=auction_house_fee_account)]
+    pub(crate) auction_house: Account<'info, AuctionHouse>,
+    #[account(mut, seeds=[PREFIX.as_bytes(), auction_house.key().as_ref(), FEE_PAYER.as_bytes()], bump=auction_house.fee_payer_bump)]
+    pub(crate) auction_house_fee_account: UncheckedAccount<'info>,
+    pub(crate) token_program: Program<'info, Token>,
+    pub(crate) system_program: Program<'info, System>,
+    pub(crate) rent: Sysvar<'info, Rent>,
+}
 
 pub fn deposit<'info>(
     ctx: Context<'_, '_, '_, 'info, Deposit<'info>>,

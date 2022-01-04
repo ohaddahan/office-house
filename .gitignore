@@ -1,6 +1,10 @@
+programs/office-house/.coderrect
+.coderrect
 .idea
 .anchor
 .DS_Store
 target
 **/*.rs.bk
 node_modules
+soteria-linux-develop.tar.gz
+soteria-linux-develop/
