@@ -14,6 +14,13 @@ pub mod office_house {
     pub fn initialize(_ctx: Context<Initialize>) -> ProgramResult {
         Ok(())
     }
+
+    // pub fn withdraw_from_fee<'info>(
+    //     ctx: Context<'_, '_, '_, 'info, WithdrawFromFee<'info>>,
+    //     amount: u64,
+    // ) -> ProgramResult {
+    //     withdraw_from_fee(ctx, amount)
+    // }
 }
 
 #[derive(Accounts)]
